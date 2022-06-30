@@ -1,0 +1,36 @@
+{
+  "name": "monadizer",
+  "version": "0.0.1",
+  "description": "Library for working with monads",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "TrayHard <wwwtrayfrost@gmail.com> (https://github.com/TrayHard)",
+  "license": "MIT",
+  "keywords": [
+    "monads"
+  ],
+  "homepage": "https://github.com/TrayHard/monadizer#readme",
+  "bugs": {
+    "url": "https://github.com/TrayHard/monadizer/issues",
+    "email": "wwwtrayfrost@gmail.com"
+  },
+  "scripts": {
+    "dev": "npm install && ts-node-dev --watch --respawn --transpile-only ./src/index.ts",
+    "update:patch": "npm run build && npm version patch && npm publish && git push origin --tags",
+    "update:minor": "npm run build && npm version minor && npm publish && git push origin --tags",
+    "update:major": "npm run build && npm version major && npm publish && git push origin --tags",
+    "build": "tsc --project ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TrayHard/monadizer"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "@types/node": "^17.0.15",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.5"
+  }
+}
