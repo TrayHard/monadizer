@@ -64,7 +64,7 @@ export class BasicError extends Error {
     let basicError;
     if (!(x instanceof Error) && !(x instanceof BasicError)) {
       basicError = BasicError.wrap(x);
-    } else if (x instanceof Error) {
+    } else if (!(x instanceof BasicError)) {
       basicError = BasicError.of(x);
     } else {
       basicError = x;
