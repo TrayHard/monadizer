@@ -40,9 +40,9 @@ export class Result {
     return this._resultStatus === "Failure";
   }
 
-  private _doAndLogIfError(f: Function): Result {
+  private _doAndLogIfError(f: Function, isFailure?: boolean): Result {
     try {
-      f(this.value);
+      f(isFailure === true ? this._errorStack : this.value);
     } catch (e) {
       this._errorStack.unshift(BasicError.transform(e));
       this._resultStatus = "Failure";
@@ -58,7 +58,7 @@ export class Result {
 
   public doOnFailure(f: Function): Result {
     if (!this.isFailure) return this;
-    return this._doAndLogIfError(f);
+    return this._doAndLogIfError(f, true);
   }
 
   public doAnyway(f: Function): Result {
