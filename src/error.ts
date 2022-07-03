@@ -20,18 +20,20 @@ export class BasicError extends Error {
       else this._name = name;
     }
 
-    if (this._wrappedError instanceof Error) {
-      this._wrappedError = errorObject;
-    } else {
-      throw new Error('Argument "errorObject" must be "Error"');
-    }
-
-    if (debug) {
+    if (debug !== undefined) {
       if (typeof debug === "object") {
         this._debug = debug;
         deepFreeze(this._debug);
       } else {
         throw new Error('Argument "debug" must be object');
+      }
+    }
+
+    if (errorObject !== undefined) {
+      if (errorObject instanceof Error) {
+        this._wrappedError = errorObject;
+      } else {
+        throw new Error('Argument "errorObject" must be "Error"');
       }
     }
   }
@@ -44,7 +46,29 @@ export class BasicError extends Error {
     return this._debug;
   }
 
-  public of(e: Error, message?: string, name?: string, debug?: object) {
+  public static of(
+    e: Error,
+    message?: string,
+    name?: string,
+    debug?: object
+  ): BasicError {
     return new BasicError(message ?? e.message, name ?? e.name, debug, e);
+  }
+
+  public static wrap(x: unknown): BasicError {
+    let e = new Error();
+    return new BasicError(e.message, e.name, { wrapped: x }, e);
+  }
+
+  public static transform(x: unknown): BasicError {
+    let basicError;
+    if (!(x instanceof Error) && !(x instanceof BasicError)) {
+      basicError = BasicError.wrap(x);
+    } else if (x instanceof Error) {
+      basicError = BasicError.of(x);
+    } else {
+      basicError = x;
+    }
+    return basicError;
   }
 }
